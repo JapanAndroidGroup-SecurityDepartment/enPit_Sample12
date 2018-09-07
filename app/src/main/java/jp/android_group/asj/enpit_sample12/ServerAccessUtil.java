@@ -12,7 +12,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import jp.android_group.asj.enpit_sample12.BuildConfig;
 import jp.android_group.asj.enpit_sample12.R;
@@ -59,17 +70,41 @@ public class ServerAccessUtil {
      */
     public static UserModel AccessServerUser(Context context, String accessType, String server, String target_name, String target_mail) {
         try {
-            HttpURLConnection con = null;
+            HttpsURLConnection con = null;
             URL url = null;
 
             if (String.valueOf(accessType).equals(Constants.ACCESS_TYPE_GET_USER)) {
-                String url_sv = "http://" + server + "/api/users/";
+                String url_sv = "https://" + server + "/api/users/";
                 String token = context.getString(R.string.token);
 
                 // URLの作成
                 url = new URL(url_sv);
                 // 接続用HttpURLConnectionオブジェクト作成
-                con = (HttpURLConnection) url.openConnection();
+                con = (HttpsURLConnection) url.openConnection();
+
+                // 証明書に書かれているCommon NameとURLのホスト名が一致していることの検証をスキップ
+                con.setHostnameVerifier(new HostnameVerifier() {
+                    public boolean verify(String hostname, SSLSession sslSession) {
+                        return true;
+                    }
+                });
+                // 証明書チェーンの検証をスキップ
+                KeyManager[] keyManagers = null;
+                TrustManager[] transManagers = { new X509TrustManager() {
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
+
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
+
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[0];
+                    }
+                } };
+                SSLContext sslcontext = SSLContext.getInstance("SSL");
+                sslcontext.init(keyManagers, transManagers, new SecureRandom());
+                con.setSSLSocketFactory(sslcontext.getSocketFactory());
+
                 // トークンセット
                 con.addRequestProperty("authorization", "Token " + token);
                 // リクエストメソッドの設定
@@ -80,6 +115,8 @@ public class ServerAccessUtil {
                 con.setDoInput(true);
                 // URL接続にデータを書き込む場合はtrue
                 con.setDoOutput(false);
+
+
 
                 // 接続
                 con.connect();
@@ -164,18 +201,42 @@ public class ServerAccessUtil {
      */
     public static ArrayList<EntryModel> AccessServerEntry(Context context, String accessType, String server, String authUserID) {
         try {
-            HttpURLConnection con = null;
+            HttpsURLConnection con = null;
             URL url = null;
             ArrayList<EntryModel> entryModels = new ArrayList<>();
 
             if (String.valueOf(accessType).equals(Constants.ACCESS_TYPE_GET_ENTRY)) {
-                String url_sv = "http://" + server + "/api/entries/";
+                String url_sv = "https://" + server + "/api/entries/";
                 String token = context.getString(R.string.token);
 
                 // URLの作成
                 url = new URL(url_sv);
-                // 接続用HttpURLConnectionオブジェクト作成
-                con = (HttpURLConnection) url.openConnection();
+                // 接続用HttpsURLConnectionオブジェクト作成
+                con = (HttpsURLConnection) url.openConnection();
+
+                // 証明書に書かれているCommon NameとURLのホスト名が一致していることの検証をスキップ
+                con.setHostnameVerifier(new HostnameVerifier() {
+                    public boolean verify(String hostname, SSLSession sslSession) {
+                        return true;
+                    }
+                });
+                // 証明書チェーンの検証をスキップ
+                KeyManager[] keyManagers = null;
+                TrustManager[] transManagers = { new X509TrustManager() {
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
+
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
+
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return new X509Certificate[0];
+                    }
+                } };
+                SSLContext sslcontext = SSLContext.getInstance("SSL");
+                sslcontext.init(keyManagers, transManagers, new SecureRandom());
+                con.setSSLSocketFactory(sslcontext.getSocketFactory());
+
                 // トークンセット
                 con.addRequestProperty("authorization", "Token " + token);
                 // リクエストメソッドの設定
