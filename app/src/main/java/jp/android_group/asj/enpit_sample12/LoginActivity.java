@@ -29,6 +29,7 @@ public class LoginActivity extends Activity {
     private Button mLoginBtn;
     private static int mAutherUserID = 0;
     private static String mAutherUserName = "";
+    private static String mIP = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class LoginActivity extends Activity {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "GetUserModel() start");
         }
-        final String ip = mServerIP.getText().toString();
+        mIP = mServerIP.getText().toString();
         String name = mLoginName.getText().toString();
         String mail = mMailAddress.getText().toString();
 
@@ -91,12 +92,12 @@ public class LoginActivity extends Activity {
                 Intent data = new Intent();
                 data.putExtra(Constants.EXTRA_USER_ID, mAutherUserID);
                 data.putExtra(Constants.EXTRA_USER_NAME, mAutherUserName);
-                data.putExtra(Constants.EXTRA_SERVER_IP, ip);
+                data.putExtra(Constants.EXTRA_SERVER_IP, mIP);
                 setResult(RESULT_OK, data);
                 finish();
             }
         });
-        connecting2Server.execute(Constants.ACCESS_TYPE_GET_USER, ip, name, mail);
+        connecting2Server.execute(Constants.ACCESS_TYPE_GET_USER, mIP, name, mail);
         return;
     }
 
