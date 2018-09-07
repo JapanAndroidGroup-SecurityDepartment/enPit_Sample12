@@ -1,4 +1,4 @@
-package jp.android_group.asj.enpit_sample11;
+package jp.android_group.asj.enpit_sample12;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import jp.android_group.asj.enpit_sample12.R;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();

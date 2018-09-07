@@ -1,4 +1,4 @@
-package jp.android_group.asj.enpit_sample11;
+package jp.android_group.asj.enpit_sample12;
 
 public class Constants {
     // 非同期用のパラメタ用途

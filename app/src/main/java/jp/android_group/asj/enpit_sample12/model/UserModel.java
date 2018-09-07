@@ -1,4 +1,4 @@
-package jp.android_group.asj.enpit_sample11.model;
+package jp.android_group.asj.enpit_sample12.model;
 
 
 import android.os.Parcel;

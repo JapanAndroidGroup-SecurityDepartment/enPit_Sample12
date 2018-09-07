@@ -1,4 +1,4 @@
-package jp.android_group.asj.enpit_sample11;
+package jp.android_group.asj.enpit_sample12;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,8 +14,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import jp.android_group.asj.enpit_sample11.model.EntryModel;
-import jp.android_group.asj.enpit_sample11.model.UserModel;
+import jp.android_group.asj.enpit_sample12.BuildConfig;
+import jp.android_group.asj.enpit_sample12.R;
+import jp.android_group.asj.enpit_sample12.model.EntryModel;
+import jp.android_group.asj.enpit_sample12.model.UserModel;
 
 public class ServerAccessUtil {
     /**

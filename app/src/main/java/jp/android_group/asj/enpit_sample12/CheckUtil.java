@@ -1,4 +1,4 @@
-package jp.android_group.asj.enpit_sample11;
+package jp.android_group.asj.enpit_sample12;
 
 import android.app.AlertDialog;
 import android.content.Context;
